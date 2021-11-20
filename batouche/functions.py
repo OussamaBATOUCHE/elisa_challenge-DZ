@@ -39,5 +39,5 @@ def point_inside_polygon(lon=-122.7924463, lat=45.4519896, polygons_json_path='5
     print(time.time() - start_all)
 
 
-point_inside_polygon(
-    polygons_json_path='/u/53/batouca1/unix/Downloads/Elisa Junction Challenge Materials-20211119T182547Z-001/Elisa Junction Challenge Materials/5G/5G_tahtiluokka_1.json')
+# point_inside_polygon(
+#     polygons_json_path='/u/53/batouca1/unix/Downloads/Elisa Junction Challenge Materials-20211119T182547Z-001/Elisa Junction Challenge Materials/5G/5G_tahtiluokka_1.json')
