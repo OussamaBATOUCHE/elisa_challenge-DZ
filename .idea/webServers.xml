@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1c2f17d2-7850-4857-b651-0cfef4d8fa44" name="monster" url="http://195.148.125.68">
+        <fileTransfer host="195.148.125.68" port="22" privateKey="$PROJECT_DIR$/../id_rsa" rootFolder="/home/mosaic" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
