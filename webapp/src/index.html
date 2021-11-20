@@ -14,11 +14,16 @@
       <button id="change-opacity">Change opacity</button>
     </div>
     <div id="map"></div>
-
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <form class="form-inline">
+      <div class="form-group">
+        <label for="files">Upload a CSV formatted file:</label>
+        <input type="file" id="files"  class="form-control" accept=".csv" required />
+      </div>
+    </form>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=visualization&v=weekly"
       async
     ></script>
+
   </body>
 </html>

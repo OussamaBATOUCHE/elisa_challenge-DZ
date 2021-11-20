@@ -38,11 +38,13 @@ def data_from_file(path):
     finalDataset = []
     with open(path, "r", encoding="utf-8") as file:
         for line in file:
-            line = line.strip()
-            lon = int(line[0:2])
-            lat = int(line[0:2])
-            day = int(line[0:2])
-            cvre = int(line[0:2])
+            line = line.split(",")
+            line[5] = line[5].strip('\n')
+            # print(line[2]) #delete header
+            lon = float(line[2])
+            lat = float(line[3])
+            day = float(line[4])
+            cvre = float(line[5])
 
             finalDataset.append(
                 [lon, lat, day, cvre])
@@ -64,7 +66,7 @@ def preprocessing(path_TrainData, path_TestData, train_perc=0.8):
     valid_input = []
     valid_target = []
 
-    for i in range(size_train):
+    for i in range(1, size_train):  # to skip the header
         train_input.append([data[i][0],
                             data[i][1],
                             data[i][2]
@@ -89,5 +91,8 @@ def preprocessing(path_TrainData, path_TestData, train_perc=0.8):
 
     return [train_input, train_target, valid_input, valid_target, test_input, test_target]
 
+
 # x, y, r, e, z, d = preprocessing("dataset/haberman.data", "dataset/test_01.data", 0.8)
 # print(x)
+# dataset = preprocessing(
+#     "dataset/data_normalized.csv", "dataset/test.data", 0.8)
