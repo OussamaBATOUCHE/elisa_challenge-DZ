@@ -1,9 +1,11 @@
+import random
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.callbacks import TensorBoard
 import cost
 import data
 import datetime
+import population
 
 
 def create(nb_layers, nb_percep, activationFunctions=["relu", "sigmoid"]):
@@ -58,7 +60,7 @@ def train(model_architecture, dataset):
               callbacks=[tensorboard],
               verbose=1
               )
-    # print(model.summary())
+    print(model.summary())
 
     bin_loss, bin_accuracy = model.evaluate(test_input, test_target)
     print("TEST-Bin-Accuracy", bin_accuracy)
@@ -84,7 +86,7 @@ def retrain_and_save(model, dataset, iterations):
     for i in range(iterations):
         metrics_and_model = train(model, dataset)
         score_i = round(((1-metrics_and_model[1])+metrics_and_model[0]), 2)
-        print("--------------- END TRAIN [", i, "/,", iterations, "] ")
+        print("--------------- END TRAIN [", i, "/", iterations, "] ")
         print("---------------     > With BIN-ACCURACY : ",
               metrics_and_model[1], " ----  LOSS : ", metrics_and_model[0], " ------ SCORE : ", score_i)
         if score_i < score:
@@ -93,3 +95,14 @@ def retrain_and_save(model, dataset, iterations):
             metrics_and_model[2].save("best_model.h5")
     print(" ------------ >  BEST MODEL SAVED ! With Binary Accuracy",
           best_accuracy, " and Score ", score)
+
+
+# try
+model_var = population.create_individual_exp(
+    nb_layer=4, nb_percep=10, epoch=30, lr=round(random.uniform(0.001, 0.1), 3))
+# print(model_var)
+dataset = data.preprocessing(
+    "dataset/data_normalized.csv", "dataset/test.data", 0.8)
+res = retrain_and_save(model_var, dataset, 100)
+
+print(res)

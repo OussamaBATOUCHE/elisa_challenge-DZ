@@ -89,9 +89,9 @@ def minimize(dataset, cost_func=cost.score_loss_acc, bounds=[(1, 5), (10, 512), 
             print('Trail : ', v_trial)
             print('Target : ', model_target)
             # --- GREEDY SELECTION (step #3.C) -------------+
-            # Train each model 2 times and take the best
-            score_trial = model.retrain(v_trial, dataset, 2)
-            score_target = model.retrain(model_target, dataset, 2)
+            # Train each model 3 times and take the best
+            score_trial = model.retrain(v_trial, dataset, 3)
+            score_target = model.retrain(model_target, dataset, 3)
 
             # Select the best
             # score_trial  = cost_func(v_trial)

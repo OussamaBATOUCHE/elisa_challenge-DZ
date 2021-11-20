@@ -57,7 +57,7 @@ def preprocessing(path_TrainData, path_TestData, train_perc=0.8):
 
     data = data_from_file(path_TrainData)
     t_data = data_from_file(path_TestData)
-
+    print(len(data))
     size_data = len(data)
     size_train = int(size_data * train_perc)
 
@@ -66,7 +66,7 @@ def preprocessing(path_TrainData, path_TestData, train_perc=0.8):
     valid_input = []
     valid_target = []
 
-    for i in range(1, size_train):  # to skip the header
+    for i in range(1, size_train):  # 1 to skip the header
         train_input.append([data[i][0],
                             data[i][1],
                             data[i][2]

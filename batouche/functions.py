@@ -13,7 +13,27 @@ def to_day_of_week(date):
     return date.dayofweek+1
 
 
-# print(to_day_of_week('20-11-2021'))
+def to_season(date):
+    """
+    From day of month to saison
+    ex: to_saison('20-11-2021') = 4 / type = int
+    1='winter'
+    2='spring'
+    3='summer'
+    4='autumn'    
+    """
+    date = pd.Timestamp(date)
+    if date.month in [1, 2, 3]:
+        return 1
+    if date.month in [4, 5, 6]:
+        return 2
+    if date.month in [7, 8, 9]:
+        return 3
+    if date.month in [10, 11, 12]:
+        return 4
+
+
+# print(to_saison('20-7-2021'))
 
 def count_couvrage(polygons_json, lon=-122.7924463, lat=45.4519896):
     """
