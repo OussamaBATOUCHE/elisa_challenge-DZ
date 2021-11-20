@@ -39,10 +39,11 @@ def data_from_file(path):
     with open(path, "r", encoding="utf-8") as file:
         for line in file:
             line = line.strip()
-            lon = int(line[0:2])
-            lat = int(line[0:2])
-            day = int(line[0:2])
-            cvre = int(line[0:2])
+            line = line.split(",")
+            lon = int(line[2])
+            lat = int(line[3])
+            day = int(line[4])
+            cvre = int(line[5])
 
             finalDataset.append(
                 [lon, lat, day, cvre])
