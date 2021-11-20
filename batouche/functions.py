@@ -9,7 +9,7 @@ def to_day_of_week(date):
     From day of month to day of week
     ex: to_day_of_week('20-11-2021') = 6 / type = int
     """
-    date = pd.Timestamp('2021-11-22')
+    date = pd.Timestamp(date)
     return date.dayofweek+1
 
 
