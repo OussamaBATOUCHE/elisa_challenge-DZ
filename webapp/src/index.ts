@@ -15,7 +15,6 @@
  */
 /* eslint-disable no-undef, @typescript-eslint/no-unused-vars, no-unused-vars */
 import "./style.css";
-
 // This example requires the Visualization library. Include the libraries=visualization
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
@@ -23,43 +22,68 @@ import "./style.css";
 let map: google.maps.Map, heatmap: google.maps.visualization.HeatmapLayer;
 
 function initMap(): void {
-  map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-    zoom: 13,
-    center: { lat: 60.1699, lng: 24.9384 },
-    mapTypeId: "satellite",
-  });
+    map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+        zoom: 14,
+        center: {lat: 60.1699, lng: 24.9384},
+        mapTypeId: "satellite",
+    });
 
-  /*heatmap = new google.maps.visualization.HeatmapLayer({
-    data: getPoints(),
-    map: map,
-  });
+    document
+        .getElementById('files')!
+        .addEventListener('change', readSingleFile);
 
-   */
+    document.getElementById('monday')!
+        .addEventListener('click', switchLayerToMonday)
 
-  document
-    .getElementById("toggle-heatmap")!
-    .addEventListener("click", toggleHeatmap);
-  document
-    .getElementById("change-gradient")!
-    .addEventListener("click", changeGradient);
-  document
-    .getElementById("change-opacity")!
-    .addEventListener("click", changeOpacity);
-  document
-    .getElementById("change-radius")!
-    .addEventListener("click", changeRadius);
-  document
-      .getElementById('files')!
-      .addEventListener('change', readSingleFile);
+    document.getElementById('tuesday')!
+        .addEventListener('click', switchLayerToTuesday)
+
+    document.getElementById('wednesday')!
+        .addEventListener('click', switchLayerToWednesday)
+
+    document.getElementById('thursday')!
+        .addEventListener('click', switchLayerToThursday)
+
+    document.getElementById('friday')!
+        .addEventListener('click', switchLayerToFriday)
+
+    document.getElementById('saturday')!
+        .addEventListener('click', switchLayerToSaturday)
+
+    document.getElementById('sunday')!
+        .addEventListener('click', switchLayerToSunday)
 
 }
 
-function toggleHeatmap(): void {
-  heatmap.setMap(heatmap.getMap() ? null : map);
+function switchLayerToMonday() {
+    heatmap.set('data', monday)
 }
 
-function changeGradient(): void {
-  const gradient = [
+function switchLayerToTuesday() {
+    heatmap.set('data', tuesday)
+}
+
+function switchLayerToWednesday() {
+    heatmap.set('data', wednesday)
+}
+
+function switchLayerToThursday() {
+    heatmap.set('data', thursday)
+}
+
+function switchLayerToFriday() {
+    heatmap.set('data', friday)
+}
+
+function switchLayerToSaturday() {
+    heatmap.set('data', saturday)
+}
+
+function switchLayerToSunday() {
+    heatmap.set('data', sunday)
+}
+
+const gradient = [
     "rgba(0, 255, 255, 0)",
     "rgba(0, 255, 255, 1)",
     "rgba(0, 191, 255, 1)",
@@ -74,49 +98,80 @@ function changeGradient(): void {
     "rgba(127, 0, 63, 1)",
     "rgba(191, 0, 31, 1)",
     "rgba(255, 0, 0, 1)",
-  ];
+];
 
-  heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
-}
 
-function changeRadius(): void {
-  heatmap.set("radius", heatmap.get("radius") ? null : 20);
-}
-
-function changeOpacity(): void {
-  heatmap.set("opacity", heatmap.get("opacity") ? null : 0.2);
-}
-
-const points: any[] =  [];
+const monday: any[] = [];
+const tuesday: any[] = [];
+const wednesday: any[] = [];
+const thursday: any[] = [];
+const friday: any[] = [];
+const saturday: any[] = [];
+const sunday: any[] = [];
 
 function readSingleFile(e) {
-  var file = e.target.files[0];
-  if (!file) {
-    return;
-  }
+    const file = e.target.files[0];
+    if (!file) {
+        return;
+    }
 
-  // @ts-ignore
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const contents = e!.target!.result;
-    const dataArray = (contents as string).split('\n');
-    dataArray.forEach( (entry ) => {
-       const array = entry.split(",")
-       let lng = +array[2];
-       let lat = +array[3];
-       let weight = +array[4];
-       if (!isNaN(lat) && !isNaN(lng) && !isNaN(weight)) points.push(
-           {location: new google.maps.LatLng(lat , lng),  weight: weight},
-       )
-    })
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: points,
-      map: map,
-    });
-  };
-  reader.readAsText(file);
+    // @ts-ignore
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const contents = e!.target!.result;
+        const dataArray = (contents as string).split('\n');
+        dataArray.forEach((entry) => {
+            const array = entry.split(",")
+            let lng = +array[2];
+            let lat = +array[3];
+            let day = +array[4];
+            let weight = +array[5];
+            if (!isNaN(lat) && !isNaN(lng) && !isNaN(weight)) {
+                let coordinate = {location: new google.maps.LatLng(lat, lng), weight: weight};
+                switch (day) {
+                    case 1 : {
+                        monday.push(coordinate);
+                        break;
+                    }
+                    case 2: {
+                        tuesday.push(coordinate);
+                        break;
+                    }
+                    case 3: {
+                        wednesday.push(coordinate);
+                        break;
+                    }
+                    case 4: {
+                        thursday.push(coordinate);
+                        break;
+                    }
+                    case 5: {
+                        friday.push(coordinate);
+                        break;
+                    }
+                    case 6: {
+                        saturday.push(coordinate);
+                        break;
+                    }
+                    case 7: {
+                        sunday.push(coordinate);
+                        break;
+                    }
+                }
+            }
+
+        })
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: monday,
+            map: map,
+            dissipating: true,
+            opacity: 0.8,
+        });
+        heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+        heatmap.set("radius", heatmap.get("radius") ? null : 50);
+    };
+    reader.readAsText(file);
 }
 
-
-export { initMap };
+export {initMap};
 
