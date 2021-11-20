@@ -37,13 +37,16 @@ def data_from_file(path):
 
     finalDataset = []
     with open(path, "r", encoding="utf-8") as file:
+        print('holaaaaa')
         for line in file:
-            line = line.strip()
+            # line = line.strip()
             line = line.split(",")
-            lon = int(line[2])
-            lat = int(line[3])
-            day = int(line[4])
-            cvre = int(line[5])
+            print('heyyyy')
+            print(line)
+            lon = 3
+            lat = 3
+            day = 3
+            cvre = 3
 
             finalDataset.append(
                 [lon, lat, day, cvre])
