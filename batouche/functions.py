@@ -15,7 +15,6 @@ def to_day_of_week(date):
 
 # print(to_day_of_week('20-11-2021'))
 
-
 def count_couvrage(polygons_json, lon=-122.7924463, lat=45.4519896):
     """
     Check if a location Longitude/Latitude is inside a polygon
