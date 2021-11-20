@@ -77,7 +77,7 @@ def build_data_set(mobility_ds, postal_codes):
     data_set = []
     data = pd.read_csv(mobility_ds, sep=";")
     df = pd.DataFrame(data, columns=['DATE', 'LKM', 'KOTIPOSTINRO', 'POSTINRO'])
-    df = df.head(2000)
+    df = df.head(10000)
     error_count = 0
 
     try:
@@ -145,6 +145,6 @@ def build_data_set(mobility_ds, postal_codes):
             # print(postal_codes[source_pc], postal_codes[destination_pc])
 
 if __name__ == "__main__":
-    # postal_codes = load_postal_code("BAF_20211113.dat")
-    # build_data_set("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
+    #postal_codes = load_postal_code("BAF_20211113.dat")
+    #build_data_set("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
     normalize("data.csv")
