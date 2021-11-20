@@ -28,6 +28,12 @@ function initMap(): void {
         mapTypeId: "satellite",
     });
 
+    map.addListener('click', (e) => {
+        let lat = e.latLng.lat();
+        let lng = e.latLng.lng();
+        console.log(lat, lng);
+    })
+
     document
         .getElementById('files')!
         .addEventListener('change', readSingleFile);
@@ -122,10 +128,10 @@ function readSingleFile(e) {
         const dataArray = (contents as string).split('\n');
         dataArray.forEach((entry) => {
             const array = entry.split(",")
-            let lng = +array[2];
-            let lat = +array[3];
-            let day = +array[4];
-            let weight = +array[5];
+            let lng = +array[1];
+            let lat = +array[2];
+            let day = +array[3];
+            let weight = +array[4];
             if (!isNaN(lat) && !isNaN(lng) && !isNaN(weight)) {
                 let coordinate = {location: new google.maps.LatLng(lat, lng), weight: weight};
                 switch (day) {
