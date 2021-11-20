@@ -33,3 +33,10 @@ def create_population(number_of_individuals):
     return population
 
 # print(create_population(10))
+
+
+def create_individual_exp(nb_layer=1, nb_percep=10, epoch=21, lr=round(random.uniform(0.001, 0.1), 3)):
+    # nb_layer,nb_percep,epoch,lr => [(1,5),(10,512),(21,301),(0.001,0.1)]
+    indiv = [nb_layer, nb_percep, epoch, lr]
+    print("[ -- ONE INDIVIDUAL CREATED]")
+    return indiv
