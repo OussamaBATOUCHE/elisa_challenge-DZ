@@ -16,15 +16,12 @@ def to_day_of_week(date):
 # print(to_day_of_week('20-11-2021'))
 
 
-def point_inside_polygon(lon=-122.7924463, lat=45.4519896, polygons_json_path='5G_tahtiluokka_3.json'):
+def point_inside_polygon(polygons_json, lon=-122.7924463, lat=45.4519896):
     """
     Check if a location Longitude/Latitude is inside a polygon
     """
-    # depending on your version, use: from shapely.geometry import shape, Point
 
-    # load GeoJSON file containing sectors
-    with open(polygons_json_path) as f:
-        js = json.load(f)
+    js = polygons_json
 
     # Set new counter
     count = 0
