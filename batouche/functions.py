@@ -13,7 +13,7 @@ def to_day_of_week(date):
     return date.dayofweek+1
 
 
-def to_saison(date):
+def to_season(date):
     """
     From day of month to saison
     ex: to_saison('20-11-2021') = 4 / type = int
