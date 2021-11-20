@@ -26,17 +26,21 @@ def point_inside_polygon(lon=-122.7924463, lat=45.4519896, polygons_json_path='5
     with open(polygons_json_path) as f:
         js = json.load(f)
 
+    # Set new counter
+    count = 0
+
     # construct point based on lon/lat returned by geocoder
     point = Point(lon, lat)
-    start_all = time.time()
+    # start_all = time.time()
     # check each polygon to see if it contains the point
     for feature in js['features']:
         polygon = shape(feature['geometry'])
         if polygon.contains(point):
+            count += 1
+            # print('Found containing polygon:', feature)
 
-            print('Found containing polygon:', feature)
-
-    print(time.time() - start_all)
+    # print(time.time() - start_all)
+    return count
 
 
 # point_inside_polygon(
