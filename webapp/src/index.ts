@@ -29,10 +29,12 @@ function initMap(): void {
     mapTypeId: "satellite",
   });
 
-  heatmap = new google.maps.visualization.HeatmapLayer({
+  /*heatmap = new google.maps.visualization.HeatmapLayer({
     data: getPoints(),
     map: map,
   });
+
+   */
 
   document
     .getElementById("toggle-heatmap")!
@@ -46,6 +48,10 @@ function initMap(): void {
   document
     .getElementById("change-radius")!
     .addEventListener("click", changeRadius);
+  document
+      .getElementById('files')!
+      .addEventListener('change', readSingleFile);
+
 }
 
 function toggleHeatmap(): void {
@@ -81,18 +87,36 @@ function changeOpacity(): void {
   heatmap.set("opacity", heatmap.get("opacity") ? null : 0.2);
 }
 
-// Heatmap data: 500 Points
-function getPoints() {
-  return [
-    {location: new google.maps.LatLng(60.1699, 24.9384),  weight: 0.5},
-    {location: new google.maps.LatLng(60.1700, 24.9384),  weight: 1},
-    {location: new google.maps.LatLng(60.1701, 24.9384),  weight: 2},
-    {location: new google.maps.LatLng(60.1702, 24.9384),  weight: 10},
-    {location: new google.maps.LatLng(60.1703, 24.9384),  weight: 3},
-    {location: new google.maps.LatLng(60.1704, 24.9384),  weight: 3.5},
-    {location: new google.maps.LatLng(60.1705, 24.9384),  weight: 4.5},
-    {location: new google.maps.LatLng(60.1706, 24.9384),  weight: 5.5},
-    {location: new google.maps.LatLng(60.1707, 24.9384),  weight: 6.5},
-  ];
+const points: any[] =  [];
+
+function readSingleFile(e) {
+  var file = e.target.files[0];
+  if (!file) {
+    return;
+  }
+
+  // @ts-ignore
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const contents = e!.target!.result;
+    const dataArray = (contents as string).split('\n');
+    dataArray.forEach( (entry ) => {
+       const array = entry.split(",")
+       let lng = +array[2];
+       let lat = +array[3];
+       let weight = +array[4];
+       if (!isNaN(lat) && !isNaN(lng) && !isNaN(weight)) points.push(
+           {location: new google.maps.LatLng(lat , lng),  weight: weight},
+       )
+    })
+    heatmap = new google.maps.visualization.HeatmapLayer({
+      data: points,
+      map: map,
+    });
+  };
+  reader.readAsText(file);
 }
+
+
 export { initMap };
+
