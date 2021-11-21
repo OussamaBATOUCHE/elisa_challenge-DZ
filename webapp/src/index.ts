@@ -34,9 +34,10 @@ function initMap(): void {
         console.log(lat, lng);
     })
 
-    document
+    /*document
         .getElementById('files')!
         .addEventListener('change', readSingleFile);
+     */
 
     document.getElementById('monday')!
         .addEventListener('click', switchLayerToMonday)
@@ -58,6 +59,8 @@ function initMap(): void {
 
     document.getElementById('sunday')!
         .addEventListener('click', switchLayerToSunday)
+
+    fetchFile('get_5g_days');
 
 }
 
@@ -115,7 +118,73 @@ const friday: any[] = [];
 const saturday: any[] = [];
 const sunday: any[] = [];
 
-function readSingleFile(e) {
+const API_URL = 'http://localhost:5000/'
+
+function fetchFile(file) {
+    fetch(API_URL + file)
+        .then(response => {
+           return response.body!
+               .getReader()
+               .read();
+        }).then(data => {
+        // @ts-ignore
+        const blob = new Blob([data.value!.buffer], {type: 'text/plain; charset=utf-8'});
+        return blob.text()
+    }).then(text => {
+        const dataArray = text.split('\n');
+        dataArray.forEach((entry) => {
+            const array = entry.split(",")
+            let lng = +array[1];
+            let lat = +array[2];
+            let day = +array[3];
+            let weight = +array[4];
+            if (!isNaN(lat) && !isNaN(lng) && !isNaN(weight)) {
+                let coordinate = {location: new google.maps.LatLng(lat, lng), weight: weight};
+                switch (day) {
+                    case 1 : {
+                        monday.push(coordinate);
+                        break;
+                    }
+                    case 2: {
+                        tuesday.push(coordinate);
+                        break;
+                    }
+                    case 3: {
+                        wednesday.push(coordinate);
+                        break;
+                    }
+                    case 4: {
+                        thursday.push(coordinate);
+                        break;
+                    }
+                    case 5: {
+                        friday.push(coordinate);
+                        break;
+                    }
+                    case 6: {
+                        saturday.push(coordinate);
+                        break;
+                    }
+                    case 7: {
+                        sunday.push(coordinate);
+                        break;
+                    }
+                }
+            }
+
+        })
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: monday,
+            map: map,
+            dissipating: true,
+            opacity: 0.8,
+        });
+        heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+        heatmap.set("radius", heatmap.get("radius") ? null : 50);
+    })
+}
+
+/*function readSingleFile(e) {
     const file = e.target.files[0];
     if (!file) {
         return;
@@ -177,7 +246,7 @@ function readSingleFile(e) {
         heatmap.set("radius", heatmap.get("radius") ? null : 50);
     };
     reader.readAsText(file);
-}
+}*/
 
 export {initMap};
 
