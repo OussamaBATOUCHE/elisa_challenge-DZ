@@ -1,2 +1,4 @@
 /webapp/node_modules
 .idea
+/batouche/lib/
+/batouche/bin/
