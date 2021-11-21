@@ -59,7 +59,7 @@ def normalize(dataset_path):
         x = (row['E'] - min) / (max - min)
         data.at[index, 'E'] = x
 
-    data.to_csv("20k_5g_data_season_normalized.csv")
+    data.to_csv("20k_4g_data_season_normalized.csv")
 
 
 def build_data_set_fiveg(mobility_ds, postal_codes):
@@ -235,4 +235,4 @@ if __name__ == "__main__":
     #build_data_set_lte("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
     #build_data_set_fiveg("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
 
-    normalize("20k_5g_data_season.csv")
+    normalize("ready datasets/20k_4g_data_season.csv")

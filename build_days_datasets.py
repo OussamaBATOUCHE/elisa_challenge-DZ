@@ -231,4 +231,4 @@ def build_data_set_lte(mobility_ds, postal_codes):
 if __name__ == "__main__":
     #postal_codes = load_postal_code("BAF_20211113.dat")
     #build_data_set_lte("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
-    normalize("20k_4g_data.csv")
+    normalize("ready datasets/20k_4g_data.csv")
