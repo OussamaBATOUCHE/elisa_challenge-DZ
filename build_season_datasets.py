@@ -59,7 +59,7 @@ def normalize(dataset_path):
         x = (row['E'] - min) / (max - min)
         data.at[index, 'E'] = x
 
-    data.to_csv("data_normalized.csv")
+    data.to_csv("20k_5g_data_season_normalized.csv")
 
 
 def build_data_set_fiveg(mobility_ds, postal_codes):
@@ -85,7 +85,7 @@ def build_data_set_fiveg(mobility_ds, postal_codes):
             source_pc = str(row['KOTIPOSTINRO'])
             destination_pc = str(row['POSTINRO'])
             date = row['DATE']
-            season = to_day_of_week(date)
+            season = to_season(date)
 
             lkm = row['LKM']
 
@@ -140,7 +140,7 @@ def build_data_set_fiveg(mobility_ds, postal_codes):
         pass
 
     dsf = pd.DataFrame(data_set, columns=['Lon', 'Lat', 'Day', 'E'])
-    dsf.to_csv("data.csv", index=False)
+    dsf.to_csv("data_season_5g.csv", index=False)
 
             # print(postal_codes[source_pc], postal_codes[destination_pc])
 
@@ -168,7 +168,7 @@ def build_data_set_lte(mobility_ds, postal_codes):
             source_pc = str(row['KOTIPOSTINRO'])
             destination_pc = str(row['POSTINRO'])
             date = row['DATE']
-            season = to_day_of_week(date)
+            season = to_season(date)
 
             lkm = row['LKM']
 
@@ -219,16 +219,20 @@ def build_data_set_lte(mobility_ds, postal_codes):
 
             if (index % 100) == 0:
                 print(index)
-    except:
+    except Exception as e:
+        print(str(e))
         pass
 
     dsf = pd.DataFrame(data_set, columns=['Lon', 'Lat', 'Day', 'E'])
-    dsf.to_csv("data.csv", index=False)
+    dsf.to_csv("data_season_lte.csv", index=False)
 
             # print(postal_codes[source_pc], postal_codes[destination_pc])
 
 
 if __name__ == "__main__":
-    postal_codes = load_postal_code("BAF_20211113.dat")
-    build_data_set_lte("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
-    #normalize("data.csv")
+
+    #postal_codes = load_postal_code("BAF_20211113.dat")
+    #build_data_set_lte("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
+    #build_data_set_fiveg("/home/mosaic/elisa_liikkuvuus_dataset.csv", postal_codes)
+
+    normalize("20k_5g_data_season.csv")
