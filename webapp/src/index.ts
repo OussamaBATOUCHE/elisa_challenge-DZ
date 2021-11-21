@@ -23,7 +23,7 @@ let map: google.maps.Map, heatmap: google.maps.visualization.HeatmapLayer;
 
 function initMap(): void {
     map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-        zoom: 14,
+        zoom: 11,
         center: {lat: 60.1699, lng: 24.9384},
         mapTypeId: "satellite",
     });
@@ -60,8 +60,30 @@ function initMap(): void {
     document.getElementById('sunday')!
         .addEventListener('click', switchLayerToSunday)
 
-    fetchFile('get_5g_days');
+    document.getElementById('5g')!
+        .addEventListener('click', switchTo5G)
 
+    document.getElementById('4g')!
+        .addEventListener('click', switchTo4G)
+
+    document.getElementById('5g_season')!
+        .addEventListener('click', switchTo5gSeason)
+
+    document.getElementById('summer')!
+        .addEventListener('click', switchToSummer)
+
+    document.getElementById('fall')!
+        .addEventListener('click', switchToFall)
+
+    fetchFile('get_4g_days');
+}
+
+function switchToSummer() {
+    heatmap.set('data', summer)
+}
+
+function switchToFall() {
+    heatmap.set('data', fall)
 }
 
 function switchLayerToMonday() {
@@ -92,6 +114,21 @@ function switchLayerToSunday() {
     heatmap.set('data', sunday)
 }
 
+function switchTo5G() {
+    heatmap.set('map', null)
+    fetchFile('get_5g_days')
+}
+
+function switchTo4G() {
+    heatmap.set('map', null)
+    fetchFile('get_4g_days')
+}
+
+function switchTo5gSeason() {
+    heatmap.set('map', null)
+    fetchSeasonFile()
+}
+
 const gradient = [
     "rgba(0, 255, 255, 0)",
     "rgba(0, 255, 255, 1)",
@@ -108,7 +145,6 @@ const gradient = [
     "rgba(191, 0, 31, 1)",
     "rgba(255, 0, 0, 1)",
 ];
-
 
 const monday: any[] = [];
 const tuesday: any[] = [];
@@ -175,6 +211,53 @@ function fetchFile(file) {
         })
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: monday,
+            map: map,
+            dissipating: true,
+            opacity: 0.8,
+        });
+        heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+        heatmap.set("radius", heatmap.get("radius") ? null : 50);
+    })
+}
+
+const summer :any[] = []
+const fall :any[] = []
+
+function fetchSeasonFile() {
+    fetch(API_URL + 'get_5g_season')
+        .then(response => {
+            return response.body!
+                .getReader()
+                .read();
+        }).then(data => {
+        // @ts-ignore
+        const blob = new Blob([data.value!.buffer], {type: 'text/plain; charset=utf-8'});
+        return blob.text()
+    }).then(text => {
+        const dataArray = text.split('\n');
+        dataArray.forEach((entry) => {
+            const array = entry.split(",")
+            let lng = +array[1];
+            let lat = +array[2];
+            let day = +array[3];
+            let weight = +array[4];
+            if (!isNaN(lat) && !isNaN(lng) && !isNaN(weight)) {
+                let coordinate = {location: new google.maps.LatLng(lat, lng), weight: weight};
+                switch (day) {
+                    case 3 : {
+                        summer.push(coordinate);
+                        break;
+                    }
+                    case 4: {
+                        fall.push(coordinate);
+                        break;
+                    }
+                }
+            }
+
+        })
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: summer,
             map: map,
             dissipating: true,
             opacity: 0.8,
