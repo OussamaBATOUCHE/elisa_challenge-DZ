@@ -2,3 +2,8 @@
 .idea
 /batouche/lib/
 /batouche/bin/
+/batouche/20k_4g_data_normalized.csv
+/batouche/20k_5g_data_normalized.csv
+/batouche/data_normalized.csv
+/batouche/20k_5g_data_season_normalized.csv
+/ready datasets
